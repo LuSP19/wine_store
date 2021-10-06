@@ -18,11 +18,11 @@ def main():
 
     for row in wine_from_file:
         category = {
-            'Название': row['Название'],
-            'Сорт': row['Сорт'],
-            'Цена': row['Цена'],
-            'Картинка': row['Картинка'],
-            'Акция': row['Акция'],
+            'name': row['Название'],
+            'sort': row['Сорт'],
+            'price': row['Цена'],
+            'picture': row['Картинка'],
+            'sale': row['Акция'],
         }
         wine[row['Категория']].append(category)
 
