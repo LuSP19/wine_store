@@ -17,14 +17,7 @@ def main():
     grouped_wines = collections.defaultdict(list)
 
     for row in wines:
-        wine = {
-            'name': row['Название'],
-            'sort': row['Сорт'],
-            'price': row['Цена'],
-            'picture': row['Картинка'],
-            'sale': row['Акция'],
-        }
-        grouped_wines[row['Категория']].append(wine)
+        grouped_wines[row['Категория']].append(row)
 
     sorted_wine_groups = dict()
     for key in sorted(grouped_wines):
