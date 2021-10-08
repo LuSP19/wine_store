@@ -8,28 +8,27 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 def main():
     winery_foundation_year = 1920
-    excel_data_df = pandas.read_excel(
+    wines = pandas.read_excel(
         'wine3.xlsx',
         sheet_name='Лист1',
         dtype={'Цена': int},
         keep_default_na=False
-    )
-    wine_from_file = excel_data_df.to_dict('records')
-    wine = collections.defaultdict(list)
+    ).to_dict('records')
+    grouped_wines = collections.defaultdict(list)
 
-    for row in wine_from_file:
-        category = {
+    for row in wines:
+        wine = {
             'name': row['Название'],
             'sort': row['Сорт'],
             'price': row['Цена'],
             'picture': row['Картинка'],
             'sale': row['Акция'],
         }
-        wine[row['Категория']].append(category)
+        grouped_wines[row['Категория']].append(wine)
 
-    wine_sorted = dict()
-    for key in sorted(wine):
-        wine_sorted[key] = wine[key]
+    sorted_wine_groups = dict()
+    for key in sorted(grouped_wines):
+        sorted_wine_groups[key] = grouped_wines[key]
 
     env = Environment(
         loader=FileSystemLoader('.'),
@@ -39,7 +38,7 @@ def main():
     template = env.get_template('template.html')
 
     rendered_page = template.render(
-        wine=wine_sorted,
+        wines=sorted_wine_groups,
         age=datetime.datetime.today().year - winery_foundation_year,
     )
 
