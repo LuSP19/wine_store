@@ -7,7 +7,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def main():
-    start = datetime.datetime(year=1920, month=1, day=1)
+    winery_foundation_year = 1920
     excel_data_df = pandas.read_excel(
         'wine3.xlsx',
         sheet_name='Лист1',
@@ -40,7 +40,7 @@ def main():
 
     rendered_page = template.render(
         wine=wine_sorted,
-        age=(datetime.datetime.today() - start).days // 365,
+        age=datetime.datetime.today().year - winery_foundation_year,
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
