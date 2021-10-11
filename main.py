@@ -26,11 +26,11 @@ def main():
         env_var='WINE_SHOP_TEMPLATE_PATH',
         help='path to template HTML file',
     )
-    
+
     args = parser.parse_args()
     wines_data_file = args.wines_data
     template_file = args.template
-    
+
     winery_foundation_year = 1920
     wines = pandas.read_excel(
         wines_data_file,
@@ -44,8 +44,8 @@ def main():
         grouped_wines[row['Категория']].append(row)
 
     sorted_wine_groups = dict()
-    for key in sorted(grouped_wines):
-        sorted_wine_groups[key] = grouped_wines[key]
+    for wines_group in sorted(grouped_wines):
+        sorted_wine_groups[wines_group] = grouped_wines[wines_group]
 
     env = Environment(
         loader=FileSystemLoader(Path(template_file).parent),
@@ -56,7 +56,7 @@ def main():
 
     rendered_page = template.render(
         wines=sorted_wine_groups,
-        age=datetime.datetime.today().year - winery_foundation_year,
+        winery_age=datetime.datetime.today().year - winery_foundation_year,
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
