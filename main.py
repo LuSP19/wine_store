@@ -9,6 +9,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def main():
+    winery_foundation_year = 1920
+
     parser = configargparse.ArgParser(
         description='Wine Shop command line application',
     )
@@ -31,15 +33,14 @@ def main():
     wines_data_file = args.wines_data
     template_file = args.template
 
-    winery_foundation_year = 1920
     wines = pandas.read_excel(
         wines_data_file,
         sheet_name='Лист1',
         dtype={'Цена': int},
         keep_default_na=False
     ).to_dict('records')
-    grouped_wines = collections.defaultdict(list)
 
+    grouped_wines = collections.defaultdict(list)
     for row in wines:
         grouped_wines[row['Категория']].append(row)
 
