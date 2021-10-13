@@ -15,26 +15,26 @@ def main():
         description='Wine Shop command line application',
     )
     parser.add_argument(
-        '-d',
-        '--wines_data',
+        '-w',
+        '--wines_path',
         default='wines.xlsx',
         env_var='WINE_SHOP_DATA_PATH',
         help='path to Excel file containing information about wines',
     )
     parser.add_argument(
         '-t',
-        '--template',
+        '--template_path',
         default='template.html',
         env_var='WINE_SHOP_TEMPLATE_PATH',
         help='path to template HTML file',
     )
 
     args = parser.parse_args()
-    wines_data_file = args.wines_data
-    template_file = args.template
+    wines_path = args.wines_path
+    template_path = args.template_path
 
     wines = pandas.read_excel(
-        wines_data_file,
+        wines_path,
         sheet_name='Лист1',
         dtype={'Цена': int},
         keep_default_na=False
@@ -49,11 +49,11 @@ def main():
         sorted_wine_groups[wines_group] = grouped_wines[wines_group]
 
     env = Environment(
-        loader=FileSystemLoader(Path(template_file).parent),
+        loader=FileSystemLoader(Path(template_path).parent),
         autoescape=select_autoescape(['html', 'xml']),
     )
 
-    template = env.get_template(Path(template_file).name)
+    template = env.get_template(Path(template_path).name)
 
     rendered_page = template.render(
         wines=sorted_wine_groups,
