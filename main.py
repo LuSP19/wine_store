@@ -28,7 +28,6 @@ def main():
         env_var='WINE_SHOP_TEMPLATE_PATH',
         help='path to template HTML file',
     )
-
     args = parser.parse_args()
     wines_path = args.wines_path
     template_path = args.template_path
@@ -39,11 +38,9 @@ def main():
         dtype={'Цена': int},
         keep_default_na=False
     ).to_dict('records')
-
     grouped_wines = collections.defaultdict(list)
     for row in wines:
         grouped_wines[row['Категория']].append(row)
-
     sorted_wine_groups = dict()
     for wines_group in sorted(grouped_wines):
         sorted_wine_groups[wines_group] = grouped_wines[wines_group]
@@ -52,9 +49,7 @@ def main():
         loader=FileSystemLoader(Path(template_path).parent),
         autoescape=select_autoescape(['html', 'xml']),
     )
-
     template = env.get_template(Path(template_path).name)
-
     rendered_page = template.render(
         wines=sorted_wine_groups,
         winery_age=datetime.datetime.today().year - winery_foundation_year,
